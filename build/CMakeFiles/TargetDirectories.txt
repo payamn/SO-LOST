@@ -1,0 +1,1 @@
+/home/payam/git_projects/ant_trails/build/CMakeFiles/antbot.dir

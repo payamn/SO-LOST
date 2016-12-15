@@ -1,0 +1,151 @@
+# Ant world
+
+include "pioneer.inc"
+include "map.inc"
+
+interval_sim 20
+#speedup 100
+paused 1
+
+# time at which to pause (in GUI mode) or quit (in headless mode) the simulation
+#quit_time 3600 # 1 hour of simulated time
+
+resolution 0.02
+
+threads 2
+
+# configure the GUI window
+window
+(
+  size [ 1855 1028 ]
+
+  center [ 1.852 -0.325 ]
+  rotate [ 4.500 1.000 ]
+  scale 27.759
+
+  show_data 1
+  show_flags 1
+
+  #interval 10
+)
+
+# load an environment bitmap
+floorplan
+(
+  name "cave"
+  pose [0.000 0.000 0.000 0.000]
+  size [64.000 32.000 0.600]
+  bitmap "bitmaps/caveMirrormain.png"
+)
+
+define home zone
+(
+  color "brown"
+  name "home"
+  fiducial_return 31
+
+  #ctrl "sink"
+)
+
+define foodVirtual zone
+(
+  fiducial_return 32
+  color "blue"
+  ctrl "../build/antbot 2"
+)
+
+define food zone
+(
+  fiducial_return 32
+  color "blue"
+  #ctrl "../build/antbot 2"
+)
+
+define antbot pioneer2dx
+(
+  fiducial
+  (
+    range_min 0.0
+    range_max 5.0
+    range_max_id 5.0
+    # TODO(jacobperron): fov property is buggy
+    #fov 1.57
+    # TODO(jacobperron): bug when ignore_zloc = 1 and obstacle is behind object, then no detection (model_fiducial.cc line 185)
+    ignore_zloc 0
+    size [0.100 0.100 0.100]
+    pose [0.000 0.000 -0.210 0.000]
+  )
+  fiducial_return 0
+
+  ctrl "../build/antbot 0"
+)
+
+define realbot pioneer2dx
+(
+  fiducial
+  (
+    range_min 0.0
+    range_max 3.0
+    range_max_id 3.0
+    # TODO(jacobperron): fov property is buggy
+    #fov 1.57
+    # TODO(jacobperron): bug when ignore_zloc = 1 and obstacle is behind object, then no detection (model_fiducial.cc line 185)
+    ignore_zloc 0
+    size [0.100 0.100 0.100]
+    pose [0.000 0.000 -0.210 0.000]
+  )
+  fiducial_retu4rn 0
+
+  ctrl "../build/antbot 1"
+)
+
+# Spawn AntBot's home
+home
+(
+  size [ 2.000 2.000 0.030 ]
+  pose [6.616 -10.575 0.000 0.000]
+)
+
+# Spawn AntBot's home
+home
+(
+  size [ 2.000 2.000 0.030 ]
+  pose [ -25.484 -10.434 0.000 0.000 ]
+)
+
+# Spawn AntBots
+antbot(pose [4.563 -11.750 0.000 -140.107] name "ant_0")
+antbot(pose [7.404 -9.908 0.000 32.353] name "ant_1")
+antbot(pose [8.665 -9.863 0.000 -8.327] name "ant_2")
+antbot(pose [6.521 -9.744 0.000 -100.000] name "ant_3")
+antbot(pose [7.276 -13.676 0.000 -100.000] name "ant_4")
+antbot(pose [7.256 -11.696 0.000 -97.135] name "ant_5")
+antbot(pose [6.379 -13.556 0.000 -100.000] name "ant_6")
+antbot(pose [4.791 -9.627 0.000 168.327] name "ant_7")
+antbot(pose [5.618 -13.511 0.000 -100.000] name "ant_8")
+antbot(pose [6.410 -11.947 0.000 -97.135] name "ant_9")
+
+realbot(pose [-25.478 -10.395 0.000 -155.749] name "real_0")
+realbot(pose [-25.490 -9.776 0.000 144.089] name "real_1")
+realbot(pose [-24.861 -10.358 0.000 -175.803] name "real_2")
+realbot(pose [-24.614 -11.124 0.000 -58.920] name "real_3")
+realbot(pose [-26.131 -9.814 0.000 -90.433] name "real_4")
+realbot(pose [-26.222 -11.008 0.000 -144.864] name "real_5")
+realbot(pose [-25.140 -11.003 0.000 -90.433] name "real_6")
+realbot(pose [-24.835 -9.819 0.000 -144.864] name "real_7")
+realbot(pose [-25.695 -11.043 0.000 -90.433] name "real_8")
+realbot(pose [-26.143 -10.374 0.000 -144.864] name "real_9")
+
+# Spawn food sources
+foodVirtual(size [0.500 0.500 0.030] pose [14.175 -15.389 0.000 -103.132] name "food_0")
+foodVirtual(size [0.500 0.500 0.030] pose [30.047 -3.306 0.000 37.242] name "food_1")
+foodVirtual(size [0.500 0.500 0.030] pose [5.651 4.851 0.000 14.324] name "food_2")
+foodVirtual(size [0.500 0.500 0.030] pose [9.862 -5.708 0.000 37.242] name "food_4")
+foodVirtual(size [0.500 0.500 0.030] pose [12.345 -8.735 0.000 14.324] name "food_5")
+
+# Spawn food sources
+food(size [0.500 0.500 0.030] pose [-2.213 -3.276 0.000 -103.132] name "foodv_0")
+food(size [0.500 0.500 0.030] pose [-26.488 4.721 0.000 37.242] name "foodv_1")
+food(size [0.500 0.500 0.030] pose [-22.327 -5.602 0.000 14.324] name "foodv_2")
+food(size [0.500 0.500 0.030] pose [-17.455 -15.107 0.000 37.242] name "foodv_4")
+food(size [0.500 0.500 0.030] pose [-19.733 -8.836 0.000 14.324] name "foodv_5")
